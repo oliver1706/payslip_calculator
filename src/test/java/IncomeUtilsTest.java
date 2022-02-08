@@ -1,67 +1,64 @@
 import com.myob.payslip_calculator.IncomeUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 
 public class IncomeUtilsTest {
-    @Test
-    void monthlyAccountFromYearlyTest() {
-        BigDecimal grossMonthlyIncome = IncomeUtils.monthlyAccountFromYearly(new BigDecimal("0.48"));
-        Assertions.assertEquals(0, grossMonthlyIncome.compareTo(new BigDecimal("0.04")));
-
-        grossMonthlyIncome = IncomeUtils.monthlyAccountFromYearly(BigDecimal.valueOf(14_000L));
-        Assertions.assertEquals(0, grossMonthlyIncome.compareTo(new BigDecimal("1166.67")));
-
-        grossMonthlyIncome = IncomeUtils.monthlyAccountFromYearly(BigDecimal.valueOf(120_000L));
-        Assertions.assertEquals(0, grossMonthlyIncome.compareTo(BigDecimal.valueOf(10_000L)));
-
-        grossMonthlyIncome = IncomeUtils.monthlyAccountFromYearly(BigDecimal.valueOf(6_000_000L));
-        Assertions.assertEquals(0, grossMonthlyIncome.compareTo(BigDecimal.valueOf(500_000L)));
+    @ParameterizedTest
+    @CsvSource({
+        "0.48,0.04",
+        "14000,1166.67",
+        "120000,10000",
+        "6000000,500000"
+    })
+    void monthlyAccountFromYearlyTest(String grossYearlyIncome, String expectedMonthlyIncome) {
+        BigDecimal grossMonthlyIncome = IncomeUtils.monthlyAccountFromYearly(new BigDecimal(grossYearlyIncome));
+        assertBigDecimalEqual(new BigDecimal(expectedMonthlyIncome), grossMonthlyIncome);
     }
 
-    @Test
-    void yearlyIncomeTaxTest() {
-        BigDecimal grossYearlyIncome = BigDecimal.valueOf(60_000L);
-        BigDecimal totalIncomeTax = IncomeUtils.yearlyIncomeTax(grossYearlyIncome);
-        Assertions.assertEquals(0, totalIncomeTax.compareTo(BigDecimal.valueOf(6_000L)));
-
-        grossYearlyIncome = BigDecimal.valueOf(150_000L);
-        totalIncomeTax = IncomeUtils.yearlyIncomeTax(grossYearlyIncome);
-        Assertions.assertEquals(0, totalIncomeTax.compareTo(BigDecimal.valueOf(31_000L)));
-
-        grossYearlyIncome = BigDecimal.valueOf(200_000L);
-        totalIncomeTax = IncomeUtils.yearlyIncomeTax(grossYearlyIncome);
-        Assertions.assertEquals(0, totalIncomeTax.compareTo(BigDecimal.valueOf(48_000L)));
+    @ParameterizedTest
+    @CsvSource({
+            "0,0",
+            "12000,0",
+            "60000,6000",
+            "150000,31000",
+            "200000,48000"
+    })
+    void yearlyIncomeTaxTest(String grossYearlyIncome, String expectedYearlyIncomeTax) {
+        BigDecimal yearlyIncomeTax = IncomeUtils.yearlyIncomeTax(new BigDecimal(grossYearlyIncome));
+        assertBigDecimalEqual(new BigDecimal(expectedYearlyIncomeTax), yearlyIncomeTax);
     }
 
-    @Test
-    void monthlyIncomeTaxFromYearlyGrossTest() {
-        BigDecimal grossYearlyIncome = BigDecimal.valueOf(60_000L);
-        BigDecimal totalIncomeTax = IncomeUtils.monthlyIncomeTaxFromYearlyGross(grossYearlyIncome);
-        Assertions.assertEquals(0, totalIncomeTax.compareTo(BigDecimal.valueOf(500L)));
-
-        grossYearlyIncome = BigDecimal.valueOf(150_000L);
-        totalIncomeTax = IncomeUtils.monthlyIncomeTaxFromYearlyGross(grossYearlyIncome);
-        Assertions.assertEquals(0, totalIncomeTax.compareTo(new BigDecimal("2583.33")));
-
-        grossYearlyIncome = BigDecimal.valueOf(200_000L);
-        totalIncomeTax = IncomeUtils.monthlyIncomeTaxFromYearlyGross(grossYearlyIncome);
-        Assertions.assertEquals(0, totalIncomeTax.compareTo(BigDecimal.valueOf(4000L)));
+    @ParameterizedTest
+    @CsvSource({
+            "0,0",
+            "12000,0",
+            "60000,500",
+            "150000,2583.33",
+            "200000,4000"
+    })
+    void monthlyIncomeTaxFromYearlyGrossTest(String grossYearlyIncome, String expectedMonthlyIncomeTax) {
+        BigDecimal monthlyIncomeTax = IncomeUtils.monthlyIncomeTaxFromYearlyGross(new BigDecimal(grossYearlyIncome));
+        assertBigDecimalEqual(new BigDecimal(expectedMonthlyIncomeTax), monthlyIncomeTax);
     }
 
-    @Test
-    void monthlyNetIncomeFromYearlyGrossTest() {
-        BigDecimal grossYearlyIncome = BigDecimal.valueOf(60_000L);
-        BigDecimal totalIncomeTax = IncomeUtils.monthlyNetIncomeFromYearlyGross(grossYearlyIncome);
-        Assertions.assertEquals(0, totalIncomeTax.compareTo(BigDecimal.valueOf(4500L)));
+    @ParameterizedTest
+    @CsvSource({
+            "0,0",
+            "12000,1000",
+            "60000,4500",
+            "150000,9916.67",
+            "200000,12666.67"
+    })
+    void monthlyNetIncomeFromYearlyGrossTest(String grossYearlyIncome, String expectedMonthlyNetIncome) {
+        BigDecimal monthlyNetIncome = IncomeUtils.monthlyNetIncomeFromYearlyGross(new BigDecimal(grossYearlyIncome));
+        assertBigDecimalEqual(new BigDecimal(expectedMonthlyNetIncome), monthlyNetIncome);
+    }
 
-        grossYearlyIncome = BigDecimal.valueOf(150_000L);
-        totalIncomeTax = IncomeUtils.monthlyNetIncomeFromYearlyGross(grossYearlyIncome);
-        Assertions.assertEquals(0, totalIncomeTax.compareTo(new BigDecimal("9916.67")));
-
-        grossYearlyIncome = BigDecimal.valueOf(200_000L);
-        totalIncomeTax = IncomeUtils.monthlyNetIncomeFromYearlyGross(grossYearlyIncome);
-        Assertions.assertEquals(0, totalIncomeTax.compareTo(new BigDecimal("12666.67")));
+    private void assertBigDecimalEqual(BigDecimal expected, BigDecimal actual) {
+        Assertions.assertEquals(0, actual.compareTo(expected));
     }
 }
