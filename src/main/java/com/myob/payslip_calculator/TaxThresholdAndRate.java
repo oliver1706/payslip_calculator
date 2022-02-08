@@ -1,3 +1,5 @@
+package com.myob.payslip_calculator;
+
 import java.math.BigDecimal;
 
 public class TaxThresholdAndRate {
