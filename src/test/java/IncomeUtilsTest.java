@@ -22,5 +22,24 @@ public class IncomeUtilsTest {
         grossYearlyIncome = BigDecimal.valueOf(150_000L);
         totalIncomeTax = IncomeUtils.yearlyIncomeTax(grossYearlyIncome);
         Assertions.assertEquals(0, totalIncomeTax.compareTo(BigDecimal.valueOf(31_000L)));
+
+        grossYearlyIncome = BigDecimal.valueOf(200_000L);
+        totalIncomeTax = IncomeUtils.yearlyIncomeTax(grossYearlyIncome);
+        Assertions.assertEquals(0, totalIncomeTax.compareTo(BigDecimal.valueOf(48_000L)));
+    }
+
+    @Test
+    void monthlyIncomeTaxTest() {
+        BigDecimal grossYearlyIncome = BigDecimal.valueOf(60_000L);
+        BigDecimal totalIncomeTax = IncomeUtils.monthlyIncomeTaxFromYearlyGross(grossYearlyIncome);
+        Assertions.assertEquals(0, totalIncomeTax.compareTo(BigDecimal.valueOf(500L)));
+
+        grossYearlyIncome = BigDecimal.valueOf(150_000L);
+        totalIncomeTax = IncomeUtils.monthlyIncomeTaxFromYearlyGross(grossYearlyIncome);
+        Assertions.assertEquals(0, totalIncomeTax.compareTo(new BigDecimal("2583.33")));
+
+        grossYearlyIncome = BigDecimal.valueOf(200_000L);
+        totalIncomeTax = IncomeUtils.monthlyIncomeTaxFromYearlyGross(grossYearlyIncome);
+        Assertions.assertEquals(0, totalIncomeTax.compareTo(BigDecimal.valueOf(4000L)));
     }
 }
