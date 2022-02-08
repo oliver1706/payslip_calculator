@@ -2,6 +2,7 @@
 
 ### Usage
 This Java 11 project uses Gradle 5.2.1 to manage dependencies. The only external dependencies are JUnit5 framework related.  
+This project was designed to meet the requirements outlined in the "MYOB Code Exercise.pdf" document.
 To run tests, run `./gradlew test` in the root directory.
 To run the project, run `./gradlew assemble` in the root directory to generate the jar, and then ```java -jar .\build\libs\payslip_calculator-1.0-SNAPSHOT.jar <employee name> <yearly gross income>``` to run it.  
 Exactly two arguments must be provided, in that order. The first is a string, and can include spaces if surrounded by double quotes. The latter is a positive number.  
