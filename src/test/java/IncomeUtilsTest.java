@@ -1,6 +1,5 @@
 import com.myob.payslip_calculator.IncomeUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -41,7 +40,7 @@ public class IncomeUtilsTest {
             "200000,4000"
     })
     void monthlyIncomeTaxFromYearlyGrossTest(String grossYearlyIncome, String expectedMonthlyIncomeTax) {
-        BigDecimal monthlyIncomeTax = IncomeUtils.monthlyIncomeTaxFromYearlyGross(new BigDecimal(grossYearlyIncome));
+        BigDecimal monthlyIncomeTax = IncomeUtils.monthlyIncomeTaxFromYearlyGrossIncome(new BigDecimal(grossYearlyIncome));
         assertBigDecimalEqual(new BigDecimal(expectedMonthlyIncomeTax), monthlyIncomeTax);
     }
 
@@ -54,7 +53,7 @@ public class IncomeUtilsTest {
             "200000,12666.67"
     })
     void monthlyNetIncomeFromYearlyGrossTest(String grossYearlyIncome, String expectedMonthlyNetIncome) {
-        BigDecimal monthlyNetIncome = IncomeUtils.monthlyNetIncomeFromYearlyGross(new BigDecimal(grossYearlyIncome));
+        BigDecimal monthlyNetIncome = IncomeUtils.monthlyNetIncomeFromYearlyGrossIncome(new BigDecimal(grossYearlyIncome));
         assertBigDecimalEqual(new BigDecimal(expectedMonthlyNetIncome), monthlyNetIncome);
     }
 
