@@ -48,4 +48,8 @@ public class IncomeUtils {
         }
         return totalTax;
     }
+
+    public static BigDecimal monthlyNetIncomeFromYearlyGross(BigDecimal yearlyIncome) {
+        return monthlyAccountFromYearly(yearlyIncome).subtract(monthlyIncomeTaxFromYearlyGross(yearlyIncome));
+    }
 }
